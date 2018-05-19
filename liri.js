@@ -2,27 +2,27 @@
 require("dotenv").config();
 
 // load fs
-let fs = require("fs");
+let fs = require("fs"),
 
-// the code required to import the `keys.js` file and store it in a variable
-let keys = require("./keys.js");
+    // the code required to import the `keys.js` file and store it in a variable
+    keys = require("./keys.js"),
 
-// define request load request package
-let request = require("request");
+    // define request load request package
+    request = require("request"),
 
-// define spotify load spotify package
-let spotify = require("spotify");
+    // define spotify load spotify package
+    Spotify = require("node-spotify-api"),
 
-// define twitter load twitter package
-let twitter = require("twitter")
+    // define twitter load twitter package
+    Twitter = require("twitter"),
 
-// define omdb load omdb package
-let omdb = require("omdb")
+    // define omdb load omdb package
+    omdb = require("omdb");
 
 
 // Load the Spotify and Twitter keys
-let spotifyKeys = new Spotify(keys.spotify);
-let twitterKeys = new Twitter(keys.twitter);
+let spotify = new Spotify(keys.spotify);
+let client = new Twitter(keys.twitter);
 
 let action = process.argv[2];
 let input = process.argv[3];
@@ -32,10 +32,6 @@ let input = process.argv[3];
 // * `spotify-this-song`
 // * `movie-this`
 // * `do-what-it-says`
-
-let myTweets = function () {
-
-}
 
 switch (action) {
     case "my-tweets":
@@ -53,7 +49,9 @@ switch (action) {
 
 // 1. `node liri.js my-tweets` * This will show your last 20 tweets and when they were created at in your terminal/bash window.
 function myTweets() {
-
+    client.get("https://api.twitter.com/1.1/statuses/user_timeline.json?", "screen_name=DavidKraftSB, count=20", function(){
+        console.log("")
+    })
 };
 
 // 2. `node liri.js spotify-this-song '<song name here>'`
@@ -63,8 +61,9 @@ function myTweets() {
 //  * A preview link of the song from Spotify
 //  * The album that the song is from
 //  * If no song is provided then your program will default to "The Sign" by Ace of Base.
-function spotifyThisSong(input) {
+function spotifyThisSong() {
 
+    console.log(/* The artists are objects. Can't figure out how to get just the name. */"\nArtist(s): " + track.artist + "\nName: " + track.name + "\nPreview Link: " + track.preview_url + /* The album is an object. Can't figure out how to get just the name. */ "\nAlbum: " + track.album)
 }
 
 // 3. `node liri.js movie-this '<movie name here>'`
@@ -82,8 +81,8 @@ function spotifyThisSong(input) {
 //         * It's on Netflix!
 //     * You'll use the request package to retrieve data from the OMDB API. Like all of the in-class activities, the OMDB API requires an API key. You may use `trilogy`.
 
-function movieThis(input) {
-    omdb.get({ title: 'Saw', year: 2004 }, true, function (err, movie) {
+function movieThis() {
+    omdb.get({ title: "input" }, true, function (err, movie) {
         if (err) {
             return console.error(err);
         }
@@ -99,5 +98,25 @@ function movieThis(input) {
         }
 
         console.log("\nTitle: " + movie.title + "\nYear: " + movie.year + "\nIMDB Rating: " + movie.imdb.rating + "\nRotten Tomatoes Rating: " + movie.tomato.rating + "\nCountries: " + movie.countries + /* Movie language, method not found */ "\nMovie Plot: " + movie.plot + "\nMovie Actors: " + movie.actors);
+    });
+}
+
+// 4. `node liri.js do-what-it-says`
+//    * Using the `fs` Node package, LIRI will take the text inside of random.txt and then use it to call one of LIRI's commands.
+//      * It should run `spotify-this-song` for "I Want it That Way," as follows the text in `random.txt`.
+//      * Feel free to change the text in that document to test out the feature for other commands.
+function doWhatItSays() {
+    fs.readFile("./random.txt", "utf8", function (err, contents) {
+        if (err) {
+            return console.log(err);
+        }
+        let contentsArray = contents.split(",");
+
+        // loops through the arguments and assigns them to the variables otherwise taken by node inputs
+        for (let i = 0; i < contentsArray.length; i++) {
+            action = contentsArray[0];
+            input = contentsArray[1];
+        }
+        check();
     });
 }
