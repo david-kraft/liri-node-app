@@ -24,9 +24,6 @@ let omdb = require("omdb")
 let spotifyKeys = new Spotify(keys.spotify);
 let twitterKeys = new Twitter(keys.twitter);
 
-
-
-
 let action = process.argv[2];
 let input = process.argv[3];
 
@@ -56,7 +53,7 @@ switch (action) {
 
 // 1. `node liri.js my-tweets` * This will show your last 20 tweets and when they were created at in your terminal/bash window.
 function myTweets() {
-    
+
 };
 
 // 2. `node liri.js spotify-this-song '<song name here>'`
@@ -84,6 +81,23 @@ function spotifyThisSong(input) {
 //         * If you haven't watched "Mr. Nobody," then you should: <http://www.imdb.com/title/tt0485947/>
 //         * It's on Netflix!
 //     * You'll use the request package to retrieve data from the OMDB API. Like all of the in-class activities, the OMDB API requires an API key. You may use `trilogy`.
-function movieThis(input) {
 
+function movieThis(input) {
+    omdb.get({ title: 'Saw', year: 2004 }, true, function (err, movie) {
+        if (err) {
+            return console.error(err);
+        }
+
+        // Defaults to Mr. Nobody
+        if (!input) {
+            input = "Mr. Nobody";
+            movieThis();
+        }
+
+        if (!movie) {
+            return console.log('Movie not found!');
+        }
+
+        console.log("\nTitle: " + movie.title + "\nYear: " + movie.year + "\nIMDB Rating: " + movie.imdb.rating + "\nRotten Tomatoes Rating: " + movie.tomato.rating + "\nCountries: " + movie.countries + /* Movie language, method not found */ "\nMovie Plot: " + movie.plot + "\nMovie Actors: " + movie.actors);
+    });
 }
