@@ -49,8 +49,8 @@ switch (action) {
 
 // 1. `node liri.js my-tweets` * This will show your last 20 tweets and when they were created at in your terminal/bash window.
 function myTweets() {
-    client.get("https://api.twitter.com/1.1/statuses/user_timeline.json?", "screen_name=DavidKraftSB, count=20", function(){
-        console.log("")
+    client.get("https://api.twitter.com/1.1/statuses/user_timeline.json?", "screen_name=DavidKraftSB, count=20", function(data){
+        console.log(data);
     })
 };
 
@@ -62,8 +62,21 @@ function myTweets() {
 //  * The album that the song is from
 //  * If no song is provided then your program will default to "The Sign" by Ace of Base.
 function spotifyThisSong() {
+/* The artists are objects. Can't figure out how to get just the name. */
+/* The album is an object. Can't figure out how to get just the name. */
+spotify
+  .search({ type: 'track', query: 'All the Small Things' })
+  .then(function(response) {
+        let items = response.tracks.items;
+        console.log(items[0]);
+        console.log("\nArtist(s): " + items.enemy.artist)
+    // console.log("\nArtist(s): " + track.artist + "\nName: " + track.name + "\nPreview Link: " + track.preview_url +  "\nAlbum: " + track.album)
 
-    console.log(/* The artists are objects. Can't figure out how to get just the name. */"\nArtist(s): " + track.artist + "\nName: " + track.name + "\nPreview Link: " + track.preview_url + /* The album is an object. Can't figure out how to get just the name. */ "\nAlbum: " + track.album)
+  })
+  .catch(function(err) {
+    console.log(err);
+  });
+
 }
 
 // 3. `node liri.js movie-this '<movie name here>'`
