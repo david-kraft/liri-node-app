@@ -1,22 +1,16 @@
 // load fs
-var fs = require("fs"),
+var fs = require("fs");
 
-    // Calling the functions from o"ther local js files
-    myTweets = require("./tweets.js"),
-    spotifyThisSong = require("./music.js"),
-    movieThis = require("./movies.js"),
+// Calling the functions from other local js files
+var myTweets = require("./tweets.js");
+var spotifyThisSong = require("./music.js");
+var movieThis = require("./movies.js");
 
-    // the code required to import the `keys.js` file and store it in a variable
-    keys = require("./keys.js"),
+var keys = require("./keys.js");
 
-    // define request load request package
-    request = require("request"),
-
-    // define spotify load spotify package
-    Spotify = require("node-spotify-api"),
-
-    // define twitter load twitter package
-    Twitter = require("twitter");
+var axios = require("axios");
+var Spotify = require("node-spotify-api");
+var Twitter = require("twitter");
 
 // Load the Spotify and Twitter keys
 var spotify = new Spotify(keys.spotify);
