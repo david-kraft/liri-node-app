@@ -6,7 +6,6 @@
   "dependencies": {
     "node-spotify-api": "^1.0.7",
     "axios": "^0.18.0",
-    "require": "^2.4.20",
     "spotify": "^0.3.0",
     "twitter": "^1.7.1"
   },
